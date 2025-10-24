@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkcha-O'zbekcha Lug'at</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .setup-notice {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        .setup-notice h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .setup-notice ol {
+            margin-left: 20px;
+            color: #856404;
+        }
+
+        .setup-notice li {
+            margin: 5px 0;
+        }
+
+        .setup-notice code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #218838;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .voice-btn {
+            padding: 15px 25px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+
+        .voice-btn:hover {
+            background: #5568d3;
+        }
+
+        .voice-btn.listening {
+            background: #dc3545;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .result-card {
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .result-card.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-card.found {
+            background: #d4edda;
+            border: 2px solid #28a745;
+        }
+
+        .result-card.not-found {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+
+        .word-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .word-title.found { color: #28a745; }
+        .word-title.not-found { color: #dc3545; }
+
+        .word-info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            width: 120px;
+            color: #666;
+        }
+
+        .info-value {
+            flex: 1;
+            color: #333;
+        }
+
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .btn-warning:hover:not(:disabled) {
+            background: #e0a800;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #c82333;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-message {
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇹🇷 ↔️ 🇺🇿 Turkcha-O'zbekcha Lug'at</h1>
+            <p>So'zni kiriting yoki talaffuz qiling</p>
+        </div>
+
+        <!-- Setup Notice -->
+        <div class="setup-notice" id="setupNotice">
+            <h3>⚙️ Sozlash kerak:</h3>
+            <ol>
+                <li><strong>words.json</strong> faylini shu HTML bilan bir papkada joylashtiring</li>
+                <li>Yoki quyidagi <strong>"JSON Yuklash"</strong> tugmasi orqali bir marta yuklang</li>
+                <li>O'zgarishlar avtomatik brauzer xotirasida saqlanadi</li>
+                <li><strong>Sync qilish:</strong> "JSON Yuklab olish" tugmasi orqali yangilangan bazani oling va boshqa qurilmalarga o'tkazing</li>
+            </ol>
+        </div>
+
+        <div class="content">
+            <!-- Status Messages -->
+            <div id="statusMessage"></div>
+
+            <!-- Statistika -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalWords">0</div>
+                    <div class="stat-label">Jami so'zlar</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" style="color: #28a745;" id="translatedWords">0</div>
+                    <div class="stat-label">Tarjima qilingan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" style="color: #dc3545;" id="untranslatedWords">0</div>
+                    <div class="stat-label">Tarjimasiz</div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-row">
+                <label for="importFile" class="btn btn-primary">
+                    📁 JSON Yuklash
+                </label>
+                <input type="file" id="importFile" accept=".json">
+                <button class="btn btn-secondary" id="exportBtn">💾 JSON Yuklab olish</button>
+                <button class="btn btn-success" id="loadFromFileBtn">📂 words.json dan yuklash</button>
+            </div>
+
+            <!-- Qidiruv -->
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="Turkcha so'zni kiriting...">
+                <button class="voice-btn" id="voiceBtn">🎤</button>
+            </div>
+
+            <!-- Natija -->
+            <div id="resultCard" class="result-card">
+                <div id="viewMode">
+                    <div class="word-title" id="wordTitle"></div>
+                    <div class="word-info" id="wordInfo"></div>
+                    <div class="button-row">
+                        <button class="btn btn-warning" id="editBtn">✏️ Tahrirlash</button>
+                        <button class="btn btn-danger" id="deleteBtn">🗑️ O'chirish</button>
+                    </div>
+                </div>
+
+                <div id="editMode" class="hidden">
+                    <h3 style="margin-bottom: 15px;">Tahrirlash / Qo'shish</h3>
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label>So'z:</label>
+                            <input type="text" id="editWord" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Tarjima *:</label>
+                            <input type="text" id="editTranslation" placeholder="O'zbek tilidagi tarjima">
+                        </div>
+                        <div class="form-group">
+                            <label>Sinonim:</label>
+                            <input type="text" id="editSynonym" placeholder="Sinonimlar">
+                        </div>
+                        <div class="form-group">
+                            <label>Antonim:</label>
+                            <input type="text" id="editAntonym" placeholder="Antonimlar">
+                        </div>
+                        <div class="form-group">
+                            <label>Misol:</label>
+                            <textarea id="editExample" placeholder="Misol jumla"></textarea>
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btn-success" id="saveBtn">💾 Saqlash</button>
+                            <button class="btn btn-secondary" id="cancelBtn">❌ Bekor qilish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let database = {};
+        let currentWord = null;
+
+        // LocalStorage dan yuklash
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('turkishDictionary');
+            if (saved) {
+                database = JSON.parse(saved);
+                updateStats();
+                showStatus('Ma\'lumotlar xotiradan yuklandi', 'success');
+                return true;
+            }
+            return false;
+        }
+
+        // LocalStorage ga saqlash
+        function saveToLocalStorage() {
+            localStorage.setItem('turkishDictionary', JSON.stringify(database));
+            updateStats();
+        }
+
+        // Status xabari
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
+            setTimeout(() => {
+                statusDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // words.json dan yuklash
+        document.getElementById('loadFromFileBtn').addEventListener('click', async function() {
+            try {
+                const response = await fetch('words.json');
+                if (!response.ok) throw new Error('words.json topilmadi');
+                
+                const data = await response.json();
+                database = {...database, ...data};
+                saveToLocalStorage();
+                document.getElementById('setupNotice').style.display = 'none';
+                showStatus(`words.json dan ${Object.keys(data).length} ta so'z yuklandi!`, 'success');
+            } catch (error) {
+                showStatus('❌ words.json fayli topilmadi. Iltimos faylni HTML bilan bir papkaga joylashtiring yoki JSON Yuklash tugmasidan foydalaning.', 'error');
+            }
+        });
+
+        // Statistikani yangilash
+        function updateStats() {
+            const total = Object.keys(database).length;
+            let translated = 0;
+            let untranslated = 0;
+
+            Object.values(database).forEach(word => {
+                if (word.translation && word.translation !== '-') {
+                    translated++;
+                } else {
+                    untranslated++;
+                }
+            });
+
+            document.getElementById('totalWords').textContent = total.toLocaleString();
+            document.getElementById('translatedWords').textContent = translated.toLocaleString();
+            document.getElementById('untranslatedWords').textContent = untranslated.toLocaleString();
+
+            if (total > 0) {
+                document.getElementById('setupNotice').style.display = 'none';
+            }
+        }
+
+        // Import
+        document.getElementById('importFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const imported = JSON.parse(event.target.result);
+                    database = {...database, ...imported};
+                    saveToLocalStorage();
+                    showStatus(`${Object.keys(imported).length} ta so'z yuklandi!`, 'success');
+                } catch (error) {
+                    showStatus('JSON fayl xato!', 'error');
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Export
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            const dataStr = JSON.stringify(database, null, 2);
+            const blob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `words_${new Date().toISOString().slice(0,10)}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            showStatus('Baza yuklab olindi!', 'success');
+        });
+
+        // Qidiruv
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const word = e.target.value.trim().toLowerCase();
+            if (word) searchWord(word);
+            else hideResult();
+        });
+
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const word = e.target.value.trim().toLowerCase();
+                if (word) searchWord(word);
+            }
+        });
+
+        function searchWord(word) {
+            currentWord = word;
+            const data = database[word];
+            const hasTranslation = data && data.translation && data.translation !== '-';
+
+            const card = document.getElementById('resultCard');
+            const title = document.getElementById('wordTitle');
+            const info = document.getElementById('wordInfo');
+
+            card.classList.remove('found', 'not-found');
+            title.classList.remove('found', 'not-found');
+
+            if (hasTranslation) {
+                card.classList.add('found');
+                title.classList.add('found');
+                title.textContent = `✅ ${word}`;
+            } else {
+                card.classList.add('not-found');
+                title.classList.add('not-found');
+                title.textContent = `❌ ${word}`;
+            }
+
+            if (data) {
+                info.innerHTML = `
+                    <div class="info-row">
+                        <div class="info-label">Tarjima:</div>
+                        <div class="info-value">${data.translation || '-'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Sinonim:</div>
+                        <div class="info-value">${data.synonym || '-'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Antonim:</div>
+                        <div class="info-value">${data.antonym || '-'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Misol:</div>
+                        <div class="info-value">${data.example || '-'}</div>
+                    </div>
+                `;
+            } else {
+                info.innerHTML = '<p style="color: #721c24;">Bu so\'z bazada yo\'q. Qo\'shing!</p>';
+            }
+
+            showViewMode();
+            card.classList.add('show');
+        }
+
+        function hideResult() {
+            document.getElementById('resultCard').classList.remove('show');
+        }
+
+        function showViewMode() {
+            document.getElementById('viewMode').classList.remove('hidden');
+            document.getElementById('editMode').classList.add('hidden');
+        }
+
+        function showEditMode() {
+            const data = database[currentWord] || {};
+            document.getElementById('editWord').value = currentWord;
+            document.getElementById('editTranslation').value = data.translation || '';
+            document.getElementById('editSynonym').value = data.synonym || '';
+            document.getElementById('editAntonym').value = data.antonym || '';
+            document.getElementById('editExample').value = data.example || '';
+
+            document.getElementById('viewMode').classList.add('hidden');
+            document.getElementById('editMode').classList.remove('hidden');
+        }
+
+        // Tahrirlash
+        document.getElementById('editBtn').addEventListener('click', showEditMode);
+
+        // Saqlash
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            const translation = document.getElementById('editTranslation').value.trim();
+            if (!translation) {
+                alert('Tarjima kiriting!');
+                return;
+            }
+
+            database[currentWord] = {
+                word: currentWord,
+                translation: translation,
+                synonym: document.getElementById('editSynonym').value.trim() || '-',
+                antonym: document.getElementById('editAntonym').value.trim() || '-',
+                homonym: '-',
+                paronym: '-',
+                etimology: '-',
+                example: document.getElementById('editExample').value.trim() || '-',
+                created_at: database[currentWord]?.created_at || new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+
+            saveToLocalStorage();
+            searchWord(currentWord);
+            showStatus('Saqlandi!', 'success');
+        });
+
+        // Bekor qilish
+        document.getElementById('cancelBtn').addEventListener('click', showViewMode);
+
+        // O'chirish
+        document.getElementById('deleteBtn').addEventListener('click', function() {
+            if (confirm(`"${currentWord}" so'zini o'chirmoqchimisiz?`)) {
+                delete database[currentWord];
+                saveToLocalStorage();
+                hideResult();
+                document.getElementById('searchInput').value = '';
+                showStatus('O\'chirildi!', 'success');
+            }
+        });
+
+        // Ovozli qidiruv
+        document.getElementById('voiceBtn').addEventListener('click', function() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                showStatus('Brauzer qo\'llab-quvvatlamaydi!', 'error');
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'tr-TR';
+
+            const btn = document.getElementById('voiceBtn');
+            btn.classList.add('listening');
+
+            recognition.onresult = function(event) {
+                const word = event.results[0][0].transcript.toLowerCase();
+                document.getElementById('searchInput').value = word;
+                searchWord(word);
+            };
+
+            recognition.onend = function() {
+                btn.classList.remove('listening');
+            };
+
+            recognition.start();
+        });
+
+        // Sahifa yuklanganda
+        window.addEventListener('load', function() {
+            if (!loadFromLocalStorage()) {
+                // words.json ni avtomatik yuklashga harakat
+                fetch('words.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        database = data;
+                        saveToLocalStorage();
+                        document.getElementById('setupNotice').style.display = 'none';
+                        showStatus('words.json dan yuklandi!', 'success');
+                    })
+                    .catch(() => {
+                        showStatus('words.json topilmadi. Iltimos JSON yuklang.', 'info');
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
