@@ -12,111 +12,171 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.35);
             overflow: hidden;
         }
 
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 40px 30px;
             text-align: center;
+            position: relative;
         }
 
         .header h1 {
-            font-size: 28px;
+            font-size: 32px;
             margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        .setup-notice {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
+        .sync-status {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 13px;
+            margin-top: 10px;
         }
 
-        .setup-notice h3 {
-            color: #856404;
-            margin-bottom: 10px;
+        .sync-status.connected {
+            background: rgba(40, 167, 69, 0.3);
         }
 
-        .setup-notice ol {
-            margin-left: 20px;
-            color: #856404;
-        }
-
-        .setup-notice li {
-            margin: 5px 0;
-        }
-
-        .setup-notice code {
-            background: #f8f9fa;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: monospace;
+        .sync-status.disconnected {
+            background: rgba(220, 53, 69, 0.3);
         }
 
         .content {
-            padding: 30px;
+            padding: 35px;
+        }
+
+        .config-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .config-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .config-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .config-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .config-group label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .config-group input {
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .config-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .config-group small {
+            color: #999;
+            font-size: 12px;
         }
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
         .stat-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 15px;
             text-align: center;
+            transition: transform 0.3s;
+            border: 2px solid #e0e0e0;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
 
         .stat-number {
-            font-size: 32px;
-            font-weight: bold;
-            color: #667eea;
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
         }
 
         .stat-label {
             color: #666;
-            font-size: 14px;
-            margin-top: 5px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .button-row {
             display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
         .btn {
             flex: 1;
-            padding: 12px 20px;
+            min-width: 140px;
+            padding: 14px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .btn:disabled {
@@ -125,94 +185,125 @@
         }
 
         .btn-primary {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
         .btn-primary:hover:not(:disabled) {
-            background: #5568d3;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-            background: #5a6268;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
 
         .btn-success {
-            background: #28a745;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
         }
 
         .btn-success:hover:not(:disabled) {
-            background: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            color: #000;
+        }
+
+        .btn-warning:hover:not(:disabled) {
+            transform: translateY(-3px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-3px);
         }
 
         .search-box {
             display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            background: white;
+            padding: 5px;
         }
 
         .search-input {
             flex: 1;
-            padding: 15px 20px;
+            padding: 18px 24px;
             font-size: 18px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            transition: border-color 0.3s;
+            border: none;
+            border-radius: 12px;
+            background: transparent;
         }
 
         .search-input:focus {
             outline: none;
-            border-color: #667eea;
         }
 
         .voice-btn {
-            padding: 15px 25px;
-            background: #667eea;
+            padding: 18px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 24px;
             transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .voice-btn:hover {
-            background: #5568d3;
+            transform: scale(1.05);
         }
 
         .voice-btn.listening {
-            background: #dc3545;
-            animation: pulse 1s infinite;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            animation: pulse 1.5s ease-in-out infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 20px rgba(220, 53, 69, 0);
+            }
         }
 
         .result-card {
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 20px;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
             display: none;
-            animation: slideIn 0.3s ease;
+            animation: slideInUp 0.4s;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
         .result-card.show {
             display: block;
         }
 
-        @keyframes slideIn {
+        @keyframes slideInUp {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -221,19 +312,22 @@
         }
 
         .result-card.found {
-            background: #d4edda;
-            border: 2px solid #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border: 3px solid #28a745;
         }
 
         .result-card.not-found {
-            background: #f8d7da;
-            border: 2px solid #dc3545;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border: 3px solid #dc3545;
         }
 
         .word-title {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 15px;
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .word-title.found { color: #28a745; }
@@ -241,15 +335,16 @@
 
         .word-info {
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
         .info-row {
             display: flex;
-            padding: 10px 0;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 0;
+            border-bottom: 2px solid #f0f0f0;
         }
 
         .info-row:last-child {
@@ -257,124 +352,148 @@
         }
 
         .info-label {
-            font-weight: 600;
-            width: 120px;
+            font-weight: 700;
+            width: 140px;
             color: #666;
+            font-size: 14px;
+            text-transform: uppercase;
         }
 
         .info-value {
             flex: 1;
             color: #333;
+            font-size: 16px;
         }
 
         .form-section {
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 15px;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 20px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            font-weight: 600;
-            margin-bottom: 5px;
+            font-weight: 700;
+            margin-bottom: 8px;
             color: #333;
+            font-size: 14px;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 10px;
+            padding: 14px 16px;
             border: 2px solid #e0e0e0;
-            border-radius: 5px;
-            font-size: 14px;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: inherit;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
 
         .form-group textarea {
-            min-height: 80px;
+            min-height: 100px;
             resize: vertical;
-            font-family: inherit;
-        }
-
-        .btn-warning {
-            background: #ffc107;
-            color: #000;
-        }
-
-        .btn-warning:hover:not(:disabled) {
-            background: #e0a800;
-        }
-
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-
-        .btn-danger:hover:not(:disabled) {
-            background: #c82333;
         }
 
         .hidden {
             display: none !important;
         }
 
-        input[type="file"] {
-            display: none;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         .status-message {
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            font-size: 14px;
+            padding: 18px 24px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 15px;
+            font-weight: 600;
+            animation: slideInDown 0.4s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .status-success {
-            background: #d4edda;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
             color: #155724;
-            border: 1px solid #c3e6cb;
+            border-left: 5px solid #28a745;
         }
 
         .status-error {
-            background: #f8d7da;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
             color: #721c24;
-            border: 1px solid #f5c6cb;
+            border-left: 5px solid #dc3545;
         }
 
         .status-info {
-            background: #d1ecf1;
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
             color: #0c5460;
-            border: 1px solid #bee5eb;
+            border-left: 5px solid #17a2b8;
+        }
+
+        .listening-indicator {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 40px 60px;
+            border-radius: 20px;
+            z-index: 10000;
+            text-align: center;
+        }
+
+        .listening-indicator.active {
+            display: block;
+        }
+
+        .listening-wave {
+            font-size: 48px;
+            margin-bottom: 15px;
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @media (max-width: 768px) {
+            .config-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -382,53 +501,69 @@
     <div class="container">
         <div class="header">
             <h1>🇹🇷 ↔️ 🇺🇿 Turkcha-O'zbekcha Lug'at</h1>
-            <p>So'zni kiriting yoki talaffuz qiling</p>
-        </div>
-
-        <!-- Setup Notice -->
-        <div class="setup-notice" id="setupNotice">
-            <h3>⚙️ Sozlash kerak:</h3>
-            <ol>
-                <li><strong>words.json</strong> faylini shu HTML bilan bir papkada joylashtiring</li>
-                <li>Yoki quyidagi <strong>"JSON Yuklash"</strong> tugmasi orqali bir marta yuklang</li>
-                <li>O'zgarishlar avtomatik brauzer xotirasida saqlanadi</li>
-                <li><strong>Sync qilish:</strong> "JSON Yuklab olish" tugmasi orqali yangilangan bazani oling va boshqa qurilmalarga o'tkazing</li>
-            </ol>
+            <p>GitHub Sync - Barcha qurilmalardan bir baza</p>
+            <div class="sync-status" id="syncStatus">
+                <span id="syncStatusText">⚙️ Sozlanmagan</span>
+            </div>
         </div>
 
         <div class="content">
             <!-- Status Messages -->
             <div id="statusMessage"></div>
 
+            <!-- GitHub Config -->
+            <div class="config-section">
+                <h3>⚙️ GitHub Sozlamalari</h3>
+                <div class="config-row">
+                    <div class="config-group">
+                        <label>GitHub Username</label>
+                        <input type="text" id="githubUsername" placeholder="sizning-username">
+                        <small>Masalan: john_doe</small>
+                    </div>
+                    <div class="config-group">
+                        <label>Repository Nomi</label>
+                        <input type="text" id="githubRepo" placeholder="turkish-dictionary">
+                        <small>Masalan: my-dictionary</small>
+                    </div>
+                </div>
+                <div class="config-row">
+                    <div class="config-group">
+                        <label>JSON Fayl Nomi</label>
+                        <input type="text" id="githubFile" placeholder="words.json" value="words.json">
+                        <small>Odatda: words.json</small>
+                    </div>
+                    <div class="config-group">
+                        <label>Branch</label>
+                        <input type="text" id="githubBranch" placeholder="main" value="main">
+                        <small>Odatda: main yoki master</small>
+                    </div>
+                </div>
+                <div class="button-row">
+                    <button class="btn btn-primary" id="connectBtn">🔗 Ulash va Yuklash</button>
+                    <button class="btn btn-success" id="pushBtn" disabled>☁️ GitHub'ga Saqlash</button>
+                    <button class="btn btn-secondary" id="syncBtn" disabled>🔄 Yangilash</button>
+                </div>
+            </div>
+
             <!-- Statistika -->
             <div class="stats">
                 <div class="stat-card">
                     <div class="stat-number" id="totalWords">0</div>
-                    <div class="stat-label">Jami so'zlar</div>
+                    <div class="stat-label">Jami So'zlar</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" style="color: #28a745;" id="translatedWords">0</div>
-                    <div class="stat-label">Tarjima qilingan</div>
+                    <div class="stat-number" id="translatedWords">0</div>
+                    <div class="stat-label">Tarjimalangan</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" style="color: #dc3545;" id="untranslatedWords">0</div>
+                    <div class="stat-number" id="untranslatedWords">0</div>
                     <div class="stat-label">Tarjimasiz</div>
                 </div>
             </div>
 
-            <!-- Buttons -->
-            <div class="button-row">
-                <label for="importFile" class="btn btn-primary">
-                    📁 JSON Yuklash
-                </label>
-                <input type="file" id="importFile" accept=".json">
-                <button class="btn btn-secondary" id="exportBtn">💾 JSON Yuklab olish</button>
-                <button class="btn btn-success" id="loadFromFileBtn">📂 words.json dan yuklash</button>
-            </div>
-
             <!-- Qidiruv -->
             <div class="search-box">
-                <input type="text" id="searchInput" class="search-input" placeholder="Turkcha so'zni kiriting...">
+                <input type="text" id="searchInput" class="search-input" placeholder="Turkcha so'zni yozing..." autocomplete="off">
                 <button class="voice-btn" id="voiceBtn">🎤</button>
             </div>
 
@@ -444,27 +579,27 @@
                 </div>
 
                 <div id="editMode" class="hidden">
-                    <h3 style="margin-bottom: 15px;">Tahrirlash / Qo'shish</h3>
+                    <h3 style="margin-bottom: 20px;">✏️ Tahrirlash / Qo'shish</h3>
                     <div class="form-section">
                         <div class="form-group">
-                            <label>So'z:</label>
+                            <label>So'z</label>
                             <input type="text" id="editWord" readonly>
                         </div>
                         <div class="form-group">
-                            <label>Tarjima *:</label>
-                            <input type="text" id="editTranslation" placeholder="O'zbek tilidagi tarjima">
+                            <label>Tarjima *</label>
+                            <input type="text" id="editTranslation" placeholder="O'zbek tilidagi tarjima...">
                         </div>
                         <div class="form-group">
-                            <label>Sinonim:</label>
-                            <input type="text" id="editSynonym" placeholder="Sinonimlar">
+                            <label>Sinonim</label>
+                            <input type="text" id="editSynonym" placeholder="Sinonimlar...">
                         </div>
                         <div class="form-group">
-                            <label>Antonim:</label>
-                            <input type="text" id="editAntonym" placeholder="Antonimlar">
+                            <label>Antonim</label>
+                            <input type="text" id="editAntonym" placeholder="Antonimlar...">
                         </div>
                         <div class="form-group">
-                            <label>Misol:</label>
-                            <textarea id="editExample" placeholder="Misol jumla"></textarea>
+                            <label>Misol</label>
+                            <textarea id="editExample" placeholder="Misol jumla..."></textarea>
                         </div>
                         <div class="button-row">
                             <button class="btn btn-success" id="saveBtn">💾 Saqlash</button>
@@ -476,54 +611,54 @@
         </div>
     </div>
 
+    <!-- Listening Indicator -->
+    <div class="listening-indicator" id="listeningIndicator">
+        <div class="listening-wave">🎤</div>
+        <div style="font-size: 20px; font-weight: 600;">Tinglanmoqda...</div>
+        <div style="font-size: 14px; margin-top: 10px; opacity: 0.8;">Turkcha gapiring</div>
+    </div>
+
     <script>
         let database = {};
         let currentWord = null;
+        let githubConfig = {
+            username: '',
+            repo: '',
+            file: 'words.json',
+            branch: 'main'
+        };
+        let isConnected = false;
+        let hasUnsavedChanges = false;
 
-        // LocalStorage dan yuklash
-        function loadFromLocalStorage() {
-            const saved = localStorage.getItem('turkishDictionary');
+        // Config ni localStorage'dan yuklash
+        function loadConfig() {
+            const saved = localStorage.getItem('githubConfig');
             if (saved) {
-                database = JSON.parse(saved);
-                updateStats();
-                showStatus('Ma\'lumotlar xotiradan yuklandi', 'success');
-                return true;
+                githubConfig = JSON.parse(saved);
+                document.getElementById('githubUsername').value = githubConfig.username;
+                document.getElementById('githubRepo').value = githubConfig.repo;
+                document.getElementById('githubFile').value = githubConfig.file;
+                document.getElementById('githubBranch').value = githubConfig.branch;
             }
-            return false;
         }
 
-        // LocalStorage ga saqlash
-        function saveToLocalStorage() {
-            localStorage.setItem('turkishDictionary', JSON.stringify(database));
-            updateStats();
+        // Config ni saqlash
+        function saveConfig() {
+            localStorage.setItem('githubConfig');
         }
 
-        // Status xabari
-        function showStatus(message, type = 'info') {
+        // Status
+        function showStatus(message, type = 'info', duration = 5000) {
             const statusDiv = document.getElementById('statusMessage');
             statusDiv.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
-            setTimeout(() => {
-                statusDiv.innerHTML = '';
-            }, 5000);
+            if (duration > 0) {
+                setTimeout(() => {
+                    statusDiv.innerHTML = '';
+                }, duration);
+            }
         }
 
-        // words.json dan yuklash
-        document.getElementById('loadFromFileBtn').addEventListener('click', async function() {
-            try {
-                const response = await fetch('words.json');
-                if (!response.ok) throw new Error('words.json topilmadi');
-                
-                const data = await response.json();
-                database = {...database, ...data};
-                saveToLocalStorage();
-                document.getElementById('setupNotice').style.display = 'none';
-                showStatus(`words.json dan ${Object.keys(data).length} ta so'z yuklandi!`, 'success');
-            } catch (error) {
-                showStatus('❌ words.json fayli topilmadi. Iltimos faylni HTML bilan bir papkaga joylashtiring yoki JSON Yuklash tugmasidan foydalaning.', 'error');
-            }
-        });
-
-        // Statistikani yangilash
+        // Statistika
         function updateStats() {
             const total = Object.keys(database).length;
             let translated = 0;
@@ -540,58 +675,69 @@
             document.getElementById('totalWords').textContent = total.toLocaleString();
             document.getElementById('translatedWords').textContent = translated.toLocaleString();
             document.getElementById('untranslatedWords').textContent = untranslated.toLocaleString();
+        }
 
-            if (total > 0) {
-                document.getElementById('setupNotice').style.display = 'none';
+        // GitHub'dan yuklash
+        async function loadFromGitHub() {
+            const username = document.getElementById('githubUsername').value.trim();
+            const repo = document.getElementById('githubRepo').value.trim();
+            const file = document.getElementById('githubFile').value.trim();
+            const branch = document.getElementById('githubBranch').value.trim();
+
+            if (!username || !repo) {
+                showStatus('❌ Username va Repository nomini kiriting!', 'error');
+                return;
+            }
+
+            githubConfig = { username, repo, file, branch };
+            localStorage.setItem('githubConfig', JSON.stringify(githubConfig));
+
+            showStatus('📥 GitHub dan yuklanmoqda...', 'info', 0);
+
+            try {
+                const url = `https://raw.githubusercontent.com/${username}/${repo}/${branch}/${file}`;
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: Fayl topilmadi`);
+                }
+
+                const data = await response.json();
+                database = data;
+                updateStats();
+
+                isConnected = true;
+                document.getElementById('syncStatus').className = 'sync-status connected';
+                document.getElementById('syncStatusText').textContent = `✅ ${username}/${repo}`;
+                document.getElementById('pushBtn').disabled = false;
+                document.getElementById('syncBtn').disabled = false;
+
+                showStatus(`✅ ${Object.keys(database).length.toLocaleString()} ta so'z yuklandi!`, 'success');
+                console.log('✅ GitHub dan yuklandi:', Object.keys(database).length);
+            } catch (error) {
+                console.error('GitHub error:', error);
+                showStatus(`❌ GitHub dan yuklab bo'lmadi: ${error.message}`, 'error', 8000);
+                isConnected = false;
             }
         }
 
-        // Import
-        document.getElementById('importFile').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                try {
-                    const imported = JSON.parse(event.target.result);
-                    database = {...database, ...imported};
-                    saveToLocalStorage();
-                    showStatus(`${Object.keys(imported).length} ta so'z yuklandi!`, 'success');
-                } catch (error) {
-                    showStatus('JSON fayl xato!', 'error');
-                }
-            };
-            reader.readAsText(file);
-        });
-
-        // Export
-        document.getElementById('exportBtn').addEventListener('click', function() {
+        // GitHub'ga saqlash (manual)
+        function saveToGitHub() {
+            const count = Object.keys(database).length;
             const dataStr = JSON.stringify(database, null, 2);
             const blob = new Blob([dataStr], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `words_${new Date().toISOString().slice(0,10)}.json`;
+            link.download = githubConfig.file;
             link.click();
             URL.revokeObjectURL(url);
-            showStatus('Baza yuklab olindi!', 'success');
-        });
+
+            hasUnsavedChanges = false;
+            showStatus(`💾 ${count.toLocaleString()} ta so'z fayl sifatida saqlandi. GitHub'ga manual yuklang!`, 'success', 8000);
+        }
 
         // Qidiruv
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const word = e.target.value.trim().toLowerCase();
-            if (word) searchWord(word);
-            else hideResult();
-        });
-
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const word = e.target.value.trim().toLowerCase();
-                if (word) searchWord(word);
-            }
-        });
-
         function searchWord(word) {
             currentWord = word;
             const data = database[word];
@@ -607,34 +753,39 @@
             if (hasTranslation) {
                 card.classList.add('found');
                 title.classList.add('found');
-                title.textContent = `✅ ${word}`;
+                title.innerHTML = `<span>✅</span><span>${word}</span>`;
             } else {
                 card.classList.add('not-found');
                 title.classList.add('not-found');
-                title.textContent = `❌ ${word}`;
+                title.innerHTML = `<span>❌</span><span>${word}</span>`;
             }
 
             if (data) {
                 info.innerHTML = `
                     <div class="info-row">
-                        <div class="info-label">Tarjima:</div>
+                        <div class="info-label">Tarjima</div>
                         <div class="info-value">${data.translation || '-'}</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">Sinonim:</div>
+                        <div class="info-label">Sinonim</div>
                         <div class="info-value">${data.synonym || '-'}</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">Antonim:</div>
+                        <div class="info-label">Antonim</div>
                         <div class="info-value">${data.antonym || '-'}</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-label">Misol:</div>
+                        <div class="info-label">Misol</div>
                         <div class="info-value">${data.example || '-'}</div>
                     </div>
                 `;
             } else {
-                info.innerHTML = '<p style="color: #721c24;">Bu so\'z bazada yo\'q. Qo\'shing!</p>';
+                info.innerHTML = `
+                    <div style="text-align: center; padding: 30px;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">📝</div>
+                        <div style="font-size: 18px; font-weight: 600;">Bazada yo'q</div>
+                    </div>
+                `;
             }
 
             showViewMode();
@@ -662,10 +813,20 @@
             document.getElementById('editMode').classList.remove('hidden');
         }
 
-        // Tahrirlash
-        document.getElementById('editBtn').addEventListener('click', showEditMode);
+        // Event Listeners
+        document.getElementById('connectBtn').addEventListener('click', loadFromGitHub);
+        document.getElementById('pushBtn').addEventListener('click', saveToGitHub);
+        document.getElementById('syncBtn').addEventListener('click', loadFromGitHub);
 
-        // Saqlash
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const word = e.target.value.trim().toLowerCase();
+            if (word) searchWord(word);
+            else hideResult();
+        });
+
+        document.getElementById('editBtn').addEventListener('click', showEditMode);
+        document.getElementById('cancelBtn').addEventListener('click', showViewMode);
+
         document.getElementById('saveBtn').addEventListener('click', function() {
             const translation = document.getElementById('editTranslation').value.trim();
             if (!translation) {
@@ -686,47 +847,65 @@
                 updated_at: new Date().toISOString()
             };
 
-            saveToLocalStorage();
+            hasUnsavedChanges = true;
+            updateStats();
             searchWord(currentWord);
-            showStatus('Saqlandi!', 'success');
+            showStatus('✅ Saqlandi! GitHub\'ga yuklash uchun "☁️ GitHub\'ga Saqlash" bosing.', 'success', 8000);
         });
 
-        // Bekor qilish
-        document.getElementById('cancelBtn').addEventListener('click', showViewMode);
-
-        // O'chirish
         document.getElementById('deleteBtn').addEventListener('click', function() {
-            if (confirm(`"${currentWord}" so'zini o'chirmoqchimisiz?`)) {
+            if (confirm(`"${currentWord}" ni o'chirish?`)) {
                 delete database[currentWord];
-                saveToLocalStorage();
+                hasUnsavedChanges = true;
+                updateStats();
                 hideResult();
                 document.getElementById('searchInput').value = '';
-                showStatus('O\'chirildi!', 'success');
+                showStatus('✅ O\'chirildi!', 'success');
             }
         });
 
         // Ovozli qidiruv
         document.getElementById('voiceBtn').addEventListener('click', function() {
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                showStatus('Brauzer qo\'llab-quvvatlamaydi!', 'error');
+                showStatus('❌ Brauzer ovozli qidiruvni qo\'llab-quvvatlamaydi', 'error');
                 return;
             }
 
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
             recognition.lang = 'tr-TR';
+            recognition.continuous = false;
+            recognition.interimResults = false;
 
             const btn = document.getElementById('voiceBtn');
-            btn.classList.add('listening');
+            const indicator = document.getElementById('listeningIndicator');
 
-            recognition.onresult = function(event) {
-                const word = event.results[0][0].transcript.toLowerCase();
-                document.getElementById('searchInput').value = word;
-                searchWord(word);
+            recognition.onstart = () => {
+                btn.classList.add('listening');
+                indicator.classList.add('active');
             };
 
-            recognition.onend = function() {
+            recognition.onresult = (event) => {
+                const word = event.results[0][0].transcript.toLowerCase().trim();
+                document.getElementById('searchInput').value = word;
+                searchWord(word);
+                showStatus(`🎤 "${word}"`, 'success', 3000);
+            };
+
+            recognition.onerror = (event) => {
+                let msg = 'Xatolik: ';
+                switch(event.error) {
+                    case 'no-speech': msg += 'Hech narsa eshitilmadi'; break;
+                    case 'audio-capture': msg += 'Mikrofon topilmadi'; break;
+                    case 'not-allowed': msg += 'Mikrofon ruxsati yo\'q'; break;
+                    default: msg += event.error;
+                }
+                showStatus('❌ ' + msg, 'error');
+            };
+
+            recognition.onend = () => {
                 btn.classList.remove('listening');
+                indicator.classList.remove('active');
             };
 
             recognition.start();
@@ -734,19 +913,16 @@
 
         // Sahifa yuklanganda
         window.addEventListener('load', function() {
-            if (!loadFromLocalStorage()) {
-                // words.json ni avtomatik yuklashga harakat
-                fetch('words.json')
-                    .then(response => response.json())
-                    .then(data => {
-                        database = data;
-                        saveToLocalStorage();
-                        document.getElementById('setupNotice').style.display = 'none';
-                        showStatus('words.json dan yuklandi!', 'success');
-                    })
-                    .catch(() => {
-                        showStatus('words.json topilmadi. Iltimos JSON yuklang.', 'info');
-                    });
+            loadConfig();
+            console.log('📚 Lug\'at tizimi tayyor');
+            console.log('🔗 GitHub konfiguratsiyasi:', githubConfig);
+        });
+
+        // Unsaved changes warning
+        window.addEventListener('beforeunload', function(e) {
+            if (hasUnsavedChanges) {
+                e.preventDefault();
+                e.returnValue = '';
             }
         });
     </script>
