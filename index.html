@@ -588,8 +588,8 @@
                     <div class="word-title" id="wordTitle"></div>
                     <div class="word-info" id="wordInfo"></div>
                     <div class="button-row">
-                        <button class="btn btn-warning" id="editBtn">✏️ Tahrirlash</button>
-                        <button class="btn btn-danger" id="deleteBtn">🗑️ O'chirish</button>
+                        <button class="btn btn-warning" id="editBtn" style="display: none;">✏️ Tahrirlash</button>
+                        <button class="btn btn-danger" id="deleteBtn" style="display: none;">🗑️ O'chirish</button>
                     </div>
                 </div>
 
@@ -807,6 +807,8 @@
             const card = document.getElementById('resultCard');
             const title = document.getElementById('wordTitle');
             const info = document.getElementById('wordInfo');
+            const editBtn = document.getElementById('editBtn');
+            const deleteBtn = document.getElementById('deleteBtn');
 
             card.classList.remove('found', 'not-found');
             title.classList.remove('found', 'not-found');
@@ -815,10 +817,21 @@
                 card.classList.add('found');
                 title.classList.add('found');
                 title.innerHTML = `<span>✅</span><span>${word}</span>`;
+                editBtn.style.display = 'inline-flex';
+                deleteBtn.style.display = 'inline-flex';
             } else {
                 card.classList.add('not-found');
                 title.classList.add('not-found');
                 title.innerHTML = `<span>❌</span><span>${word}</span>`;
+                
+                // Tarjimasi yo'q so'zlar uchun ham tahrirlash va o'chirish tugmalarini ko'rsatish
+                if (data) {
+                    editBtn.style.display = 'inline-flex';
+                    deleteBtn.style.display = 'inline-flex';
+                } else {
+                    editBtn.style.display = 'none';
+                    deleteBtn.style.display = 'none';
+                }
             }
 
             if (data) {
@@ -844,9 +857,15 @@
                 info.innerHTML = `
                     <div style="text-align: center; padding: 30px;">
                         <div style="font-size: 48px; margin-bottom: 15px;">📝</div>
-                        <div style="font-size: 18px; font-weight: 600;">Bazada yo'q</div>
+                        <div style="font-size: 18px; font-weight: 600; color: #721c24;">Bazada yo'q</div>
+                        <div style="font-size: 14px; margin-top: 10px; color: #721c24; opacity: 0.8;">Qo'shish uchun tahrirlash tugmasini bosing</div>
                     </div>
                 `;
+                
+                // Yangi so'z uchun ham tahrirlash tugmasini ko'rsatish
+                editBtn.style.display = 'inline-flex';
+                editBtn.innerHTML = '<span>➕ Qo\'shish</span>';
+                deleteBtn.style.display = 'none';
             }
 
             showViewMode();
@@ -864,6 +883,8 @@
 
         function showEditMode() {
             const data = database[currentWord] || {};
+            const editBtn = document.getElementById('editBtn');
+            
             document.getElementById('editWord').value = currentWord;
             document.getElementById('editTranslation').value = data.translation || '';
             document.getElementById('editSynonym').value = data.synonym || '';
@@ -872,6 +893,18 @@
 
             document.getElementById('viewMode').classList.add('hidden');
             document.getElementById('editMode').classList.remove('hidden');
+            
+            // Tahrirlash modeiga o'tganda tugmani o'zgartirish
+            if (!data.translation || data.translation === '-') {
+                editBtn.innerHTML = '<span>➕ Qo\'shish</span>';
+            } else {
+                editBtn.innerHTML = '<span>✏️ Tahrirlash</span>';
+            }
+            
+            // Tarjima maydoniga fokus
+            setTimeout(() => {
+                document.getElementById('editTranslation').focus();
+            }, 100);
         }
 
         // Event Listeners
@@ -886,7 +919,17 @@
         });
 
         document.getElementById('editBtn').addEventListener('click', showEditMode);
-        document.getElementById('cancelBtn').addEventListener('click', showViewMode);
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            showViewMode();
+            // Bekor qilganda tugmani qayta tiklash
+            const data = database[currentWord];
+            const editBtn = document.getElementById('editBtn');
+            if (data && data.translation && data.translation !== '-') {
+                editBtn.innerHTML = '<span>✏️ Tahrirlash</span>';
+            } else {
+                editBtn.innerHTML = '<span>➕ Qo\'shish</span>';
+            }
+        });
 
         document.getElementById('saveBtn').addEventListener('click', function() {
             const translation = document.getElementById('editTranslation').value.trim();
@@ -895,6 +938,8 @@
                 document.getElementById('editTranslation').focus();
                 return;
             }
+
+            const isNewWord = !database[currentWord] || !database[currentWord].translation || database[currentWord].translation === '-';
 
             database[currentWord] = {
                 word: currentWord,
@@ -912,7 +957,12 @@
             localStorage.setItem('dictionaryDatabase', JSON.stringify(database));
             updateStats();
             searchWord(currentWord);
-            showStatus('✅ Saqlandi! Endi "☁️ Yuklash (Push)" bosib, GitHub\'ga yuklang.', 'success', 6000);
+            
+            if (isNewWord) {
+                showStatus('✅ Yangi so\'z qo\'shildi! Endi "☁️ Yuklash (Push)" bosib, GitHub\'ga yuklang.', 'success', 6000);
+            } else {
+                showStatus('✅ Tarjima yangilandi! Endi "☁️ Yuklash (Push)" bosib, GitHub\'ga yuklang.', 'success', 6000);
+            }
         });
 
         document.getElementById('deleteBtn').addEventListener('click', function() {
