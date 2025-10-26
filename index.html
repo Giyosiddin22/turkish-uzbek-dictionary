@@ -700,7 +700,7 @@
             document.getElementById('untranslatedWords').textContent = untranslated.toLocaleString();
         }
 
-        // GitHub'dan yuklash (PULL)
+        // GitHub'dan yuklash (PULL) - CORS muammosini hal qilish
         async function pullFromGitHub() {
             saveConfig();
 
@@ -715,23 +715,43 @@
             showStatus('📥 GitHub\'dan yuklanmoqda...', 'info', 0);
 
             try {
-                const url = `https://raw.githubusercontent.com/${githubConfig.username}/${githubConfig.repo}/${githubConfig.branch}/${githubConfig.file}`;
-                console.log('Fetching from:', url);
+                // GitHub API orqali yuklash (CORS muammosini hal qiladi)
+                const apiUrl = `https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/${githubConfig.file}?ref=${githubConfig.branch}`;
+                console.log('Fetching from GitHub API:', apiUrl);
                 
-                const response = await fetch(url, {
-                    cache: 'no-store',
+                const response = await fetch(apiUrl, {
                     headers: {
-                        'Cache-Control': 'no-cache'
+                        'Accept': 'application/vnd.github.v3+json'
                     }
                 });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: Fayl topilmadi yoki xatolik`);
+                    // Agar API ishlamasa, raw.githubusercontent.com orqali harakat qilamiz
+                    console.log('API failed, trying raw URL...');
+                    const rawUrl = `https://raw.githubusercontent.com/${githubConfig.username}/${githubConfig.repo}/${githubConfig.branch}/${githubConfig.file}`;
+                    const rawResponse = await fetch(rawUrl, {
+                        mode: 'cors',
+                        cache: 'no-store'
+                    });
+                    
+                    if (!rawResponse.ok) {
+                        throw new Error(`Fayl topilmadi (${response.status}). Repository'da ${githubConfig.file} faylini tekshiring.`);
+                    }
+                    
+                    const data = await rawResponse.json();
+                    database = data;
+                } else {
+                    // GitHub API'dan kelgan javob
+                    const result = await response.json();
+                    
+                    // Base64'dan decode qilish
+                    const content = result.content;
+                    const decoded = atob(content.replace(/\n/g, ''));
+                    const data = JSON.parse(decoded);
+                    database = data;
                 }
-
-                const data = await response.json();
-                database = data;
                 
+                // LocalStorage'ga saqlash
                 localStorage.setItem('dictionaryDatabase', JSON.stringify(database));
                 
                 updateStats();
@@ -746,7 +766,15 @@
                 console.log('✅ Pull muvaffaqiyatli:', Object.keys(database).length, 'ta so\'z');
             } catch (error) {
                 console.error('GitHub pull error:', error);
-                showStatus(`❌ Xatolik: ${error.message}`, 'error', 8000);
+                
+                let errorMsg = '❌ Xatolik: ';
+                if (error.message.includes('Failed to fetch')) {
+                    errorMsg += `CORS xatoligi yoki internetga ulanish muammosi. \n\nYechim:\n1. words.json faylini GitHub'ga yuklang\n2. Repository'ni Public qiling\n3. Sahifani yangilang va qaytadan urinib ko'ring`;
+                } else {
+                    errorMsg += error.message;
+                }
+                
+                showStatus(errorMsg, 'error', 15000);
                 syncStatus.className = 'sync-status';
                 document.getElementById('syncStatusText').textContent = '❌ Xatolik';
                 isConnected = false;
