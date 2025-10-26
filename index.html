@@ -42,20 +42,29 @@
         }
 
         .sync-status {
-            display: inline-block;
-            padding: 8px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
             background: rgba(255,255,255,0.2);
-            border-radius: 20px;
-            font-size: 13px;
-            margin-top: 10px;
+            border-radius: 25px;
+            font-size: 14px;
+            margin-top: 12px;
+            font-weight: 600;
         }
 
         .sync-status.connected {
-            background: rgba(40, 167, 69, 0.3);
+            background: rgba(40, 167, 69, 0.4);
         }
 
-        .sync-status.disconnected {
-            background: rgba(220, 53, 69, 0.3);
+        .sync-status.syncing {
+            background: rgba(255, 193, 7, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
         .content {
@@ -63,7 +72,7 @@
         }
 
         .config-section {
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 25px;
             border-radius: 15px;
             margin-bottom: 30px;
@@ -76,6 +85,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 18px;
         }
 
         .config-row {
@@ -92,16 +102,16 @@
         }
 
         .config-group label {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 13px;
-            color: #666;
+            color: #555;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .config-group input {
             padding: 12px 16px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #ddd;
             border-radius: 10px;
             font-size: 14px;
             transition: all 0.3s;
@@ -113,9 +123,30 @@
             box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
 
-        .config-group small {
-            color: #999;
-            font-size: 12px;
+        .info-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .info-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box ol {
+            margin-left: 20px;
+            color: #856404;
+        }
+
+        .info-box li {
+            margin: 8px 0;
+            line-height: 1.6;
         }
 
         .stats {
@@ -201,7 +232,6 @@
 
         .btn-success:hover:not(:disabled) {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
         }
 
         .btn-secondary {
@@ -209,27 +239,14 @@
             color: white;
         }
 
-        .btn-secondary:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
-        }
-
         .btn-warning {
             background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
             color: #000;
         }
 
-        .btn-warning:hover:not(:disabled) {
-            transform: translateY(-3px);
-        }
-
         .btn-danger {
             background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
-        }
-
-        .btn-danger:hover:not(:disabled) {
-            transform: translateY(-3px);
         }
 
         .search-box {
@@ -264,7 +281,6 @@
             cursor: pointer;
             font-size: 24px;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .voice-btn:hover {
@@ -274,17 +290,6 @@
         .voice-btn.listening {
             background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 0 0 20px rgba(220, 53, 69, 0);
-            }
         }
 
         .result-card {
@@ -482,15 +487,15 @@
             .config-row {
                 grid-template-columns: 1fr;
             }
-
+            
             .stats {
                 grid-template-columns: 1fr;
             }
-
+            
             .button-row {
                 flex-direction: column;
             }
-
+            
             .btn {
                 width: 100%;
             }
@@ -517,31 +522,41 @@
                 <div class="config-row">
                     <div class="config-group">
                         <label>GitHub Username</label>
-                        <input type="text" id="githubUsername" placeholder="sizning-username">
-                        <small>Masalan: john_doe</small>
+                        <input type="text" id="githubUsername" placeholder="Giyosiddin22">
                     </div>
                     <div class="config-group">
                         <label>Repository Nomi</label>
-                        <input type="text" id="githubRepo" placeholder="turkish-dictionary">
-                        <small>Masalan: my-dictionary</small>
+                        <input type="text" id="githubRepo" placeholder="turkish-uzbek-dictionary">
                     </div>
                 </div>
                 <div class="config-row">
                     <div class="config-group">
                         <label>JSON Fayl Nomi</label>
-                        <input type="text" id="githubFile" placeholder="words.json" value="words.json">
-                        <small>Odatda: words.json</small>
+                        <input type="text" id="githubFile" value="words.json">
                     </div>
                     <div class="config-group">
                         <label>Branch</label>
-                        <input type="text" id="githubBranch" placeholder="main" value="main">
-                        <small>Odatda: main yoki master</small>
+                        <input type="text" id="githubBranch" value="main">
                     </div>
                 </div>
                 <div class="button-row">
-                    <button class="btn btn-primary" id="connectBtn">🔗 Ulash va Yuklash</button>
-                    <button class="btn btn-success" id="pushBtn" disabled>☁️ GitHub'ga Saqlash</button>
-                    <button class="btn btn-secondary" id="syncBtn" disabled>🔄 Yangilash</button>
+                    <button class="btn btn-primary" id="connectBtn">🔗 Ulash</button>
+                    <button class="btn btn-success" id="downloadBtn" disabled>📥 Yangilash (Pull)</button>
+                    <button class="btn btn-warning" id="uploadBtn" disabled>☁️ Yuklash (Push)</button>
+                </div>
+
+                <div class="info-box">
+                    <h4>📋 Qanday ishlaydi?</h4>
+                    <ol>
+                        <li><strong>Ulash:</strong> GitHub'dagi bazani yuklab oladi</li>
+                        <li><strong>Qidiruv/Tahrirlash:</strong> So'zlarni qo'shing va tahrirlang</li>
+                        <li><strong>Push:</strong> O'zgarishlarni GitHub'ga yuklang (fayl yuklab olinadi, uni GitHub'ga manual yuklang)</li>
+                        <li><strong>Boshqa qurilmada Pull:</strong> Yangilanishlarni oling</li>
+                    </ol>
+                    <p style="margin-top: 15px; font-weight: 600; color: #856404;">
+                        ⚠️ Har safar o'zgarish qilganingizda "☁️ Yuklash (Push)" ni bosing, 
+                        faylni GitHub'ga yuklang, boshqa qurilmada "📥 Yangilash (Pull)" ni bosing!
+                    </p>
                 </div>
             </div>
 
@@ -628,26 +643,34 @@
             branch: 'main'
         };
         let isConnected = false;
-        let hasUnsavedChanges = false;
 
-        // Config ni localStorage'dan yuklash
+        // Config yuklash va saqlash
         function loadConfig() {
             const saved = localStorage.getItem('githubConfig');
             if (saved) {
-                githubConfig = JSON.parse(saved);
-                document.getElementById('githubUsername').value = githubConfig.username;
-                document.getElementById('githubRepo').value = githubConfig.repo;
-                document.getElementById('githubFile').value = githubConfig.file;
-                document.getElementById('githubBranch').value = githubConfig.branch;
+                try {
+                    githubConfig = JSON.parse(saved);
+                    document.getElementById('githubUsername').value = githubConfig.username || '';
+                    document.getElementById('githubRepo').value = githubConfig.repo || '';
+                    document.getElementById('githubFile').value = githubConfig.file || 'words.json';
+                    document.getElementById('githubBranch').value = githubConfig.branch || 'main';
+                } catch (e) {
+                    console.error('Config load error:', e);
+                }
             }
         }
 
-        // Config ni saqlash
         function saveConfig() {
-            localStorage.setItem('githubConfig');
+            githubConfig = {
+                username: document.getElementById('githubUsername').value.trim(),
+                repo: document.getElementById('githubRepo').value.trim(),
+                file: document.getElementById('githubFile').value.trim(),
+                branch: document.getElementById('githubBranch').value.trim()
+            };
+            localStorage.setItem('githubConfig', JSON.stringify(githubConfig));
         }
 
-        // Status
+        // Status xabar
         function showStatus(message, type = 'info', duration = 5000) {
             const statusDiv = document.getElementById('statusMessage');
             statusDiv.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
@@ -665,7 +688,7 @@
             let untranslated = 0;
 
             Object.values(database).forEach(word => {
-                if (word.translation && word.translation !== '-') {
+                if (word.translation && word.translation !== '-' && word.translation !== '') {
                     translated++;
                 } else {
                     untranslated++;
@@ -677,71 +700,109 @@
             document.getElementById('untranslatedWords').textContent = untranslated.toLocaleString();
         }
 
-        // GitHub'dan yuklash
-        async function loadFromGitHub() {
-            const username = document.getElementById('githubUsername').value.trim();
-            const repo = document.getElementById('githubRepo').value.trim();
-            const file = document.getElementById('githubFile').value.trim();
-            const branch = document.getElementById('githubBranch').value.trim();
+        // GitHub'dan yuklash (PULL)
+        async function pullFromGitHub() {
+            saveConfig();
 
-            if (!username || !repo) {
+            if (!githubConfig.username || !githubConfig.repo) {
                 showStatus('❌ Username va Repository nomini kiriting!', 'error');
                 return;
             }
 
-            githubConfig = { username, repo, file, branch };
-            localStorage.setItem('githubConfig', JSON.stringify(githubConfig));
-
-            showStatus('📥 GitHub dan yuklanmoqda...', 'info', 0);
+            const syncStatus = document.getElementById('syncStatus');
+            syncStatus.className = 'sync-status syncing';
+            document.getElementById('syncStatusText').textContent = '🔄 Yuklanmoqda...';
+            showStatus('📥 GitHub\'dan yuklanmoqda...', 'info', 0);
 
             try {
-                const url = `https://raw.githubusercontent.com/${username}/${repo}/${branch}/${file}`;
-                const response = await fetch(url);
+                const url = `https://raw.githubusercontent.com/${githubConfig.username}/${githubConfig.repo}/${githubConfig.branch}/${githubConfig.file}`;
+                console.log('Fetching from:', url);
+                
+                const response = await fetch(url, {
+                    cache: 'no-store',
+                    headers: {
+                        'Cache-Control': 'no-cache'
+                    }
+                });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: Fayl topilmadi`);
+                    throw new Error(`HTTP ${response.status}: Fayl topilmadi yoki xatolik`);
                 }
 
                 const data = await response.json();
                 database = data;
+                
+                localStorage.setItem('dictionaryDatabase', JSON.stringify(database));
+                
                 updateStats();
-
+                
                 isConnected = true;
-                document.getElementById('syncStatus').className = 'sync-status connected';
-                document.getElementById('syncStatusText').textContent = `✅ ${username}/${repo}`;
-                document.getElementById('pushBtn').disabled = false;
-                document.getElementById('syncBtn').disabled = false;
+                syncStatus.className = 'sync-status connected';
+                document.getElementById('syncStatusText').textContent = `✅ ${githubConfig.username}/${githubConfig.repo}`;
+                document.getElementById('downloadBtn').disabled = false;
+                document.getElementById('uploadBtn').disabled = false;
 
-                showStatus(`✅ ${Object.keys(database).length.toLocaleString()} ta so'z yuklandi!`, 'success');
-                console.log('✅ GitHub dan yuklandi:', Object.keys(database).length);
+                showStatus(`✅ ${Object.keys(database).length.toLocaleString()} ta so'z GitHub'dan yuklandi!`, 'success');
+                console.log('✅ Pull muvaffaqiyatli:', Object.keys(database).length, 'ta so\'z');
             } catch (error) {
-                console.error('GitHub error:', error);
-                showStatus(`❌ GitHub dan yuklab bo'lmadi: ${error.message}`, 'error', 8000);
+                console.error('GitHub pull error:', error);
+                showStatus(`❌ Xatolik: ${error.message}`, 'error', 8000);
+                syncStatus.className = 'sync-status';
+                document.getElementById('syncStatusText').textContent = '❌ Xatolik';
                 isConnected = false;
             }
         }
 
-        // GitHub'ga saqlash (manual)
-        function saveToGitHub() {
+        // GitHub'ga yuklash (PUSH)
+        function pushToGitHub() {
             const count = Object.keys(database).length;
-            const dataStr = JSON.stringify(database, null, 2);
-            const blob = new Blob([dataStr], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = githubConfig.file;
-            link.click();
-            URL.revokeObjectURL(url);
+            
+            if (count === 0) {
+                showStatus('⚠️ Baza bo\'sh!', 'error');
+                return;
+            }
 
-            hasUnsavedChanges = false;
-            showStatus(`💾 ${count.toLocaleString()} ta so'z fayl sifatida saqlandi. GitHub'ga manual yuklang!`, 'success', 8000);
+            try {
+                localStorage.setItem('dictionaryDatabase', JSON.stringify(database));
+                
+                const dataStr = JSON.stringify(database, null, 2);
+                const blob = new Blob([dataStr], {type: 'application/json;charset=utf-8'});
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = githubConfig.file || 'words.json';
+                link.click();
+                URL.revokeObjectURL(url);
+
+                showStatus(`✅ ${count.toLocaleString()} ta so'z saqlandi! Endi:\n\n1. GitHub repository'ga kiring\n2. "${githubConfig.file}" faylini edit qiling\n3. Hamma matnni o'chiring\n4. Yangi yuklab olingan fayldagi matnni joylashtiring\n5. "Commit changes" bosing`, 'success', 15000);
+                
+                console.log('✅ Push uchun fayl saqlandi');
+            } catch (e) {
+                showStatus('❌ Xatolik: ' + e.message, 'error');
+            }
+        }
+
+        // LocalStorage'dan yuklash
+        function loadFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('dictionaryDatabase');
+                if (saved) {
+                    database = JSON.parse(saved);
+                    updateStats();
+                    console.log('📦 LocalStorage\'dan yuklandi:', Object.keys(database).length, 'ta so\'z');
+                    return true;
+                }
+            } catch (e) {
+                console.error('LocalStorage yuklash xatosi:', e);
+            }
+            return false;
         }
 
         // Qidiruv
         function searchWord(word) {
             currentWord = word;
             const data = database[word];
-            const hasTranslation = data && data.translation && data.translation !== '-';
+            const hasTranslation = data && data.translation && data.translation !== '-' && data.translation !== '';
 
             const card = document.getElementById('resultCard');
             const title = document.getElementById('wordTitle');
@@ -814,9 +875,9 @@
         }
 
         // Event Listeners
-        document.getElementById('connectBtn').addEventListener('click', loadFromGitHub);
-        document.getElementById('pushBtn').addEventListener('click', saveToGitHub);
-        document.getElementById('syncBtn').addEventListener('click', loadFromGitHub);
+        document.getElementById('connectBtn').addEventListener('click', pullFromGitHub);
+        document.getElementById('downloadBtn').addEventListener('click', pullFromGitHub);
+        document.getElementById('uploadBtn').addEventListener('click', pushToGitHub);
 
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const word = e.target.value.trim().toLowerCase();
@@ -830,7 +891,8 @@
         document.getElementById('saveBtn').addEventListener('click', function() {
             const translation = document.getElementById('editTranslation').value.trim();
             if (!translation) {
-                alert('Tarjima kiriting!');
+                alert('⚠️ Tarjima maydonini to\'ldiring!');
+                document.getElementById('editTranslation').focus();
                 return;
             }
 
@@ -847,27 +909,27 @@
                 updated_at: new Date().toISOString()
             };
 
-            hasUnsavedChanges = true;
+            localStorage.setItem('dictionaryDatabase', JSON.stringify(database));
             updateStats();
             searchWord(currentWord);
-            showStatus('✅ Saqlandi! GitHub\'ga yuklash uchun "☁️ GitHub\'ga Saqlash" bosing.', 'success', 8000);
+            showStatus('✅ Saqlandi! Endi "☁️ Yuklash (Push)" bosib, GitHub\'ga yuklang.', 'success', 6000);
         });
 
         document.getElementById('deleteBtn').addEventListener('click', function() {
-            if (confirm(`"${currentWord}" ni o'chirish?`)) {
+            if (confirm(`⚠️ "${currentWord}" so'zini o'chirmoqchimisiz?`)) {
                 delete database[currentWord];
-                hasUnsavedChanges = true;
+                localStorage.setItem('dictionaryDatabase', JSON.stringify(database));
                 updateStats();
                 hideResult();
                 document.getElementById('searchInput').value = '';
-                showStatus('✅ O\'chirildi!', 'success');
+                showStatus('✅ O\'chirildi! Endi "☁️ Yuklash (Push)" bosib, GitHub\'ga yuklang.', 'success', 6000);
             }
         });
 
         // Ovozli qidiruv
         document.getElementById('voiceBtn').addEventListener('click', function() {
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                showStatus('❌ Brauzer ovozli qidiruvni qo\'llab-quvvatlamaydi', 'error');
+                showStatus('❌ Brauzeringiz ovozli qidiruvni qo\'llab-quvvatlamaydi. Chrome yoki Edge ishlatib ko\'ring.', 'error', 6000);
                 return;
             }
 
@@ -876,6 +938,7 @@
             recognition.lang = 'tr-TR';
             recognition.continuous = false;
             recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
 
             const btn = document.getElementById('voiceBtn');
             const indicator = document.getElementById('listeningIndicator');
@@ -883,48 +946,93 @@
             recognition.onstart = () => {
                 btn.classList.add('listening');
                 indicator.classList.add('active');
+                console.log('🎤 Tinglash boshlandi');
             };
 
             recognition.onresult = (event) => {
                 const word = event.results[0][0].transcript.toLowerCase().trim();
+                const confidence = event.results[0][0].confidence;
+                
+                console.log('🎤 Eshitildi:', word, '- Aniqlik:', (confidence * 100).toFixed(0) + '%');
+                
                 document.getElementById('searchInput').value = word;
                 searchWord(word);
-                showStatus(`🎤 "${word}"`, 'success', 3000);
+                showStatus(`🎤 Eshitildi: "${word}"`, 'success', 3000);
             };
 
             recognition.onerror = (event) => {
-                let msg = 'Xatolik: ';
+                console.error('❌ Ovoz xatolik:', event.error);
+                let msg = '❌ ';
                 switch(event.error) {
-                    case 'no-speech': msg += 'Hech narsa eshitilmadi'; break;
-                    case 'audio-capture': msg += 'Mikrofon topilmadi'; break;
-                    case 'not-allowed': msg += 'Mikrofon ruxsati yo\'q'; break;
-                    default: msg += event.error;
+                    case 'no-speech': msg += 'Hech narsa eshitilmadi. Qaytadan urinib ko\'ring.'; break;
+                    case 'audio-capture': msg += 'Mikrofon topilmadi yoki ishlamayapti.'; break;
+                    case 'not-allowed': msg += 'Mikrofon ruxsati yo\'q. Brauzer sozlamalaridan ruxsat bering.'; break;
+                    case 'network': msg += 'Internet aloqasi yo\'q.'; break;
+                    default: msg += 'Xatolik: ' + event.error;
                 }
-                showStatus('❌ ' + msg, 'error');
+                showStatus(msg, 'error', 6000);
             };
 
             recognition.onend = () => {
                 btn.classList.remove('listening');
                 indicator.classList.remove('active');
+                console.log('🎤 Tinglash tugadi');
             };
 
-            recognition.start();
+            try {
+                recognition.start();
+            } catch (e) {
+                console.error('Start error:', e);
+                showStatus('❌ Ovozli qidiruvni ishga tushirib bo\'lmadi', 'error');
+                btn.classList.remove('listening');
+                indicator.classList.remove('active');
+            }
         });
 
         // Sahifa yuklanganda
         window.addEventListener('load', function() {
+            console.log('📚 Turkcha-O\'zbekcha Lug\'at');
+            console.log('✅ Version: 1.0 Final');
+            console.log('----------------------------');
+            
             loadConfig();
-            console.log('📚 Lug\'at tizimi tayyor');
-            console.log('🔗 GitHub konfiguratsiyasi:', githubConfig);
+            
+            if (loadFromLocalStorage()) {
+                showStatus('📦 Avvalgi ma\'lumotlar yuklandi. GitHub\'dan yangilash uchun "📥 Yangilash (Pull)" bosing.', 'info', 8000);
+            } else {
+                showStatus('👋 Xush kelibsiz! GitHub sozlamalarini kiriting va "🔗 Ulash" bosing.', 'info', 0);
+            }
+            
+            if (githubConfig.username && githubConfig.repo) {
+                document.getElementById('downloadBtn').disabled = false;
+                document.getElementById('uploadBtn').disabled = false;
+            }
+
+            console.log('📖 Ishlash tartibi:');
+            console.log('1. GitHub ma\'lumotlarini kiriting (username, repo)');
+            console.log('2. "🔗 Ulash" - GitHub\'dan bazani yuklash');
+            console.log('3. So\'zlarni qidiring, qo\'shing, tahrirlang');
+            console.log('4. "☁️ Yuklash (Push)" - faylni yuklab oling');
+            console.log('5. GitHub\'ga manual yuklang');
+            console.log('6. Boshqa qurilmada "📥 Yangilash (Pull)" - yangilanishlarni oling');
+            console.log('----------------------------');
         });
 
-        // Unsaved changes warning
-        window.addEventListener('beforeunload', function(e) {
-            if (hasUnsavedChanges) {
+        // Klaviatura shortcutlar
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
                 e.preventDefault();
-                e.returnValue = '';
+                document.getElementById('searchInput').focus();
+            }
+            
+            if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+                e.preventDefault();
+                document.getElementById('voiceBtn').click();
             }
         });
+
+        console.log('✅ Sayt tayyor!');
+        console.log('⌨️ Klaviatura: Ctrl+K (qidiruv), Ctrl+/ (ovoz)');
     </script>
 </body>
 </html>
