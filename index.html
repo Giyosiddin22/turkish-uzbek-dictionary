@@ -700,81 +700,81 @@
             document.getElementById('untranslatedWords').textContent = untranslated.toLocaleString();
         }
 
-        // GitHub'dan yuklash (PULL) - CORS muammosini hal qilish
+        // GitHub'dan yuklash (PULL) - Lokal fayldan yoki GitHub'dan
         async function pullFromGitHub() {
             saveConfig();
-
-            if (!githubConfig.username || !githubConfig.repo) {
-                showStatus('❌ Username va Repository nomini kiriting!', 'error');
-                return;
-            }
 
             const syncStatus = document.getElementById('syncStatus');
             syncStatus.className = 'sync-status syncing';
             document.getElementById('syncStatusText').textContent = '🔄 Yuklanmoqda...';
-            showStatus('📥 GitHub\'dan yuklanmoqda...', 'info', 0);
+            showStatus('📥 Yuklanmoqda...', 'info', 0);
 
             try {
-                // GitHub API orqali yuklash (CORS muammosini hal qiladi)
-                const apiUrl = `https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/${githubConfig.file}?ref=${githubConfig.branch}`;
-                console.log('Fetching from GitHub API:', apiUrl);
+                let data = null;
                 
-                const response = await fetch(apiUrl, {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3+json'
+                // 1-usul: Lokal fayldan yuklash (eng ishonchli)
+                try {
+                    console.log('Trying local words.json...');
+                    const localResponse = await fetch('./words.json');
+                    if (localResponse.ok) {
+                        data = await localResponse.json();
+                        console.log('✅ Loaded from local file');
                     }
-                });
-
-                if (!response.ok) {
-                    // Agar API ishlamasa, raw.githubusercontent.com orqali harakat qilamiz
-                    console.log('API failed, trying raw URL...');
-                    const rawUrl = `https://raw.githubusercontent.com/${githubConfig.username}/${githubConfig.repo}/${githubConfig.branch}/${githubConfig.file}`;
-                    const rawResponse = await fetch(rawUrl, {
-                        mode: 'cors',
-                        cache: 'no-store'
-                    });
-                    
-                    if (!rawResponse.ok) {
-                        throw new Error(`Fayl topilmadi (${response.status}). Repository'da ${githubConfig.file} faylini tekshiring.`);
-                    }
-                    
-                    const data = await rawResponse.json();
-                    database = data;
-                } else {
-                    // GitHub API'dan kelgan javob
-                    const result = await response.json();
-                    
-                    // Base64'dan decode qilish
-                    const content = result.content;
-                    const decoded = atob(content.replace(/\n/g, ''));
-                    const data = JSON.parse(decoded);
-                    database = data;
+                } catch (localError) {
+                    console.log('Local file not found, trying GitHub...');
                 }
-                
-                // LocalStorage'ga saqlash
+
+                // 2-usul: GitHub Pages URL'dan yuklash
+                if (!data && githubConfig.username && githubConfig.repo) {
+                    try {
+                        const ghPagesUrl = `https://${githubConfig.username}.github.io/${githubConfig.repo}/${githubConfig.file}`;
+                        console.log('Trying GitHub Pages:', ghPagesUrl);
+                        const ghResponse = await fetch(ghPagesUrl);
+                        if (ghResponse.ok) {
+                            data = await ghResponse.json();
+                            console.log('✅ Loaded from GitHub Pages');
+                        }
+                    } catch (ghError) {
+                        console.log('GitHub Pages failed:', ghError);
+                    }
+                }
+
+                // 3-usul: GitHub API (base64 decode)
+                if (!data && githubConfig.username && githubConfig.repo) {
+                    try {
+                        const apiUrl = `https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/${githubConfig.file}`;
+                        console.log('Trying GitHub API:', apiUrl);
+                        const apiResponse = await fetch(apiUrl);
+                        if (apiResponse.ok) {
+                            const result = await apiResponse.json();
+                            const decoded = atob(result.content.replace(/\n/g, ''));
+                            data = JSON.parse(decoded);
+                            console.log('✅ Loaded from GitHub API');
+                        }
+                    } catch (apiError) {
+                        console.log('GitHub API failed:', apiError);
+                    }
+                }
+
+                if (!data) {
+                    throw new Error('Fayl topilmadi. words.json faylini index.html bilan bir papkada joylashtiring.');
+                }
+
+                database = data;
                 localStorage.setItem('dictionaryDatabase', JSON.stringify(database));
-                
                 updateStats();
                 
                 isConnected = true;
                 syncStatus.className = 'sync-status connected';
-                document.getElementById('syncStatusText').textContent = `✅ ${githubConfig.username}/${githubConfig.repo}`;
+                document.getElementById('syncStatusText').textContent = '✅ Ulangan';
                 document.getElementById('downloadBtn').disabled = false;
                 document.getElementById('uploadBtn').disabled = false;
 
-                showStatus(`✅ ${Object.keys(database).length.toLocaleString()} ta so'z GitHub'dan yuklandi!`, 'success');
+                showStatus(`✅ ${Object.keys(database).length.toLocaleString()} ta so'z yuklandi!`, 'success');
                 console.log('✅ Pull muvaffaqiyatli:', Object.keys(database).length, 'ta so\'z');
             } catch (error) {
-                console.error('GitHub pull error:', error);
-                
-                let errorMsg = '❌ Xatolik: ';
-                if (error.message.includes('Failed to fetch')) {
-                    errorMsg += `CORS xatoligi yoki internetga ulanish muammosi. \n\nYechim:\n1. words.json faylini GitHub'ga yuklang\n2. Repository'ni Public qiling\n3. Sahifani yangilang va qaytadan urinib ko'ring`;
-                } else {
-                    errorMsg += error.message;
-                }
-                
-                showStatus(errorMsg, 'error', 15000);
+                console.error('Load error:', error);
+                showStatus(`❌ ${error.message}`, 'error', 10000);
                 syncStatus.className = 'sync-status';
                 document.getElementById('syncStatusText').textContent = '❌ Xatolik';
                 isConnected = false;
